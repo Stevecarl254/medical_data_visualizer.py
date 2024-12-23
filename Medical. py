@@ -1,0 +1,63 @@
+```python
+# Import necessary libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('medical_examination.csv')
+
+# Display the first few rows of the dataset
+print("First few rows of the dataset:")
+print(data.head())
+
+# Get summary statistics
+print("\nSummary statistics:")
+print(data.describe())
+
+# Check for null values
+print("\nNull values in each column:")
+print(data.isnull().sum())
+
+# Data Cleaning
+# Drop rows with null values
+data.dropna(inplace=True)
+
+# Convert categorical variables to 'category' type
+categorical_columns = ['smoking', 'alcohol_consumption', 'physical_activity', 'cardiac_disease']
+for column in categorical_columns:
+    data[column] = data[column].astype('category')
+
+# Visualization #1: Distribution of Blood Pressure
+plt.figure(figsize=(10, 6))
+sns.histplot(data['blood_pressure'], bins=30, kde=True)
+plt.title('Distribution of Blood Pressure')
+plt.xlabel('Blood Pressure')
+plt.ylabel('Frequency')
+plt.show()
+
+# Visualization #2: Correlation Heatmap
+plt.figure(figsize=(12, 8))
+correlation_matrix = data.corr()
+sns.heatmap(correlation_matrix, annot=True, fmt='.2f', cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
+# Visualization #3: Cardiac Disease by Smoking Status
+plt.figure(figsize=(10, 6))
+sns.countplot(x='cardiac_disease', hue='smoking', data=data)
+plt.title('Cardiac Disease by Smoking Status')
+plt.xlabel('Cardiac Disease')
+plt.ylabel('Count')
+plt.legend(title='Smoking')
+plt.show()
+
+# Visualization #4: Physical Activity and Cardiac Disease
+plt.figure(figsize=(10, 6))
+sns.countplot(x='cardiac_disease', hue='physical_activity', data=data)
+plt.title('Cardiac Disease by Physical Activity')
+plt.xlabel('Cardiac Disease')
+plt.ylabel('Count')
+plt.legend(title='Physical Activity')
+plt.show()
+```
